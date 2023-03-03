@@ -1,0 +1,22 @@
+{% extends "AppBlog/padre.html" %}}
+{% block titulo %}
+Peliculas
+{% endblock %}
+
+{% block contenido %}
+    <!--Aqui va lo que cambia, y lo asociado a esta vista-->
+    <section class="mt-5">  
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Nueva Pelicula</h1>
+                    <form method="post">
+                    {% csrf_token %}
+                        {{form.as_p}}
+                        <input type="submit" value="Enviar">
+                    </form>
+                </div>
+            </div>
+        </div>
+     </section>
+{% endblock %}

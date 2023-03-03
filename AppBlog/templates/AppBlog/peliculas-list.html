@@ -1,0 +1,32 @@
+{% extends "AppBlog/padre.html" %}}
+{% block titulo %}
+Peliculas
+{% endblock %}
+
+{% block contenido %}
+    <!--Aqui va lo que cambia, y lo asociado a esta vista-->
+    <section class="mt-5">  
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Peliculas</h1>
+                    <ul>
+                        {% for pelicula in object_list %}
+                        <li>
+                            <p>Nombre: {{pelicula.nombre}}</p>
+                            <p>
+                                <a href="{% url 'detalle' pelicula.id%}">Ver</a>
+                                <a href="{% url 'editar' pelicula.id%}">Editar</a>
+                                <a href="{% url 'eliminar' pelicula.id%}">Eliminar</a>
+                            </p>
+                        </li>
+                        {% endfor %}
+                        <p>
+                            <a href="{% url 'nuevo' %}">Crear nueva pelicula</a>
+                        </p>
+                    </ul> 
+                </div>
+            </div>
+        </div>
+     </section>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "AppBlog/padre.html" %}
+
+{% block titulo %}
+Editar Perfil
+{% endblock %}
+
+{% block contenido %}
+    <!--Aqui va lo que cambia, y lo asociado a esta vista-->
+    <section class="mt-5">  
+        <div class="container">
+            <div class="row">
+                <h1>Formulario - Editar Perfil</h1>
+                <h3>Usuario {{usuario}}</h3>
+
+                <form action="" method="POST">
+
+                    {% csrf_token %}
+                    <table>
+                        {{mi_formulario.as_table}}
+                    </table>
+                    <input type="submit" value="Editar perfil"></input>
+                    
+                </form>
+
+
+            </div>
+        </div>
+     </section>
+    
+
+{% endblock %}

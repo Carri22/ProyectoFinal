@@ -1,0 +1,21 @@
+{% extends "AppBlog/padre.html" %}
+
+{% block titulo %}
+Bienvenido a mi proyecto AppBlog
+{% endblock %}
+
+{% block contenido %}
+    <!--Aqui va lo que cambia, y lo asociado a esta vista-->
+    <section class="mt-5 text-center">  
+        <div class="container">
+            <div class="row">
+                {% if mensaje %}
+                   <p style="color: red;">{{ mensaje }}</p>
+                   {% endif %} 
+                <h1>Bienvenido a mi sitio</h1>
+            </div>
+        </div>
+     </section>
+    
+
+{% endblock %}

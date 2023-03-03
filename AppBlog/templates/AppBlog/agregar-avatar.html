@@ -1,0 +1,28 @@
+{% extends "AppBlog/padre.html" %}
+
+{% block titulo %}
+Agregar un avatar
+{% endblock %}
+
+{% block contenido %}
+    <!--Aqui va lo que cambia, y lo asociado a esta vista-->
+    <section class="mt-5">  
+        <div class="container">
+            <div class="row">
+                <h1>Formulario - Editar Avatar</h1>
+
+                <form action="" method="POST" enctype="multipart/form-data">
+
+                    {% csrf_token %}
+                    {{mi_formulario.as_p}}
+                    <input type="submit" value="Editar avatar"></input>
+                    
+                </form>
+
+
+            </div>
+        </div>
+     </section>
+    
+
+{% endblock %}
