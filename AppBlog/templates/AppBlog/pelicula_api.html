@@ -1,0 +1,22 @@
+{% extends "AppBlog/padre.html" %}}
+{% block titulo %}
+Peliculas populares
+{% endblock %}
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Películas populares</h1>
+  <ul>
+    {% for pelicula in peliculas %}
+      <li>
+        <h2>{{ pelicula.titulo }}</h2>
+        <p>{{ pelicula.sinopsis }}</p>
+        <img src="{{ pelicula.poster.url }}" alt="Poster de {{ pelicula.titulo }}">
+        <p>Fecha de lanzamiento: {{ pelicula.fecha_lanzamiento }}</p>
+      </li>
+    {% empty %}
+      <li>No se encontraron películas.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

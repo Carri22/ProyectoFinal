@@ -1,28 +1,27 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User 
-from .models import Avatar, Pelicula, Comentario
+from .models import Avatar, Pelicula, Comentario, PeliculaComentario
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-#Formulario de peliculas
+#Formulario de Pelicula
 class PeliculaForm(forms.ModelForm):
     class Meta:
         model = Pelicula
-        fields = ['nombre', 'sinopsis', 'foto', 'puntacion']
+        fields = ['nombre', 'sinopsis', 'foto']
 
-#Formulario de Comentarios
+#Formulario de Comentario
 class ComentarioForm(forms.ModelForm):
-    autor = forms.ModelChoiceField(widget=forms.HiddenInput, queryset=User.objects.all())
-
     class Meta:
         model = Comentario
-        fields = ['autor', 'cuerpo']
+        fields = ['cuerpo']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['autor'].initial = self.instance.autor
+class PeliculaComentarioForm(forms.ModelForm):
+    class Meta:
+        model = PeliculaComentario
+        fields = ['pelicula', 'comentario']
 
 
 

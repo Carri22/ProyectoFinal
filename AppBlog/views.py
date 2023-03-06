@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 #Importacion de modelos
-from AppBlog.models import Pelicula,Comentario,Avatar
+from AppBlog.models import Pelicula,Comentario,Avatar, Puntuacion
 #Importacion de formularios
-from .forms import MyUserCreationForm,UserEditForm,AvatarFormulario
+from .forms import MyUserCreationForm,UserEditForm,AvatarFormulario, ComentarioForm
 #Importacion de vista lista
 from django.views.generic import ListView
 #Importacion de la vista detalles
@@ -22,7 +22,7 @@ from django.urls import  reverse_lazy
 
 # Create your views here.
 def inicio(request):
-    return render(request,'AppCoder/inicio.html')
+    return render(request,'AppBlog/inicio.html')
 
 #CRUD DE PELICULA
 class PeliculaList(LoginRequiredMixin,ListView):
@@ -33,17 +33,50 @@ class PeliculaDetalle(DetailView):
     model = Pelicula
     template_name = 'AppBlog/pelicula-detalle.html'
 
+
+    #get_context_data() de la superclase para obtener el contexto predeterminado, 
+    # y luego agregar la lista de comentarios a ese contexto. 
+    # Para obtener los comentarios, primero obtiene la película actual (self.object) y 
+    # luego utiliza el atributo de relación inversa relacionada con el modelo de Comentario (comentarios_pelis) 
+    # para obtener los comentarios asociados con la película. Luego, agrega la lista de comentarios al contexto con la clave 'comentarios', 
+    # que puedes usar en tu plantilla para mostrar los comentarios asociados a la película.
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pelicula = self.object
+        comentarios = pelicula.comentarios_pelis.all()
+        puntuaciones = pelicula.puntuaciones.all()
+        puntajes = [p.puntuacion for p in puntuaciones]
+        puntacion_promedio = sum(puntajes) / len(puntajes) if puntajes else None
+        context['cantidad_puntajes'] = len(puntajes)
+        context['puntuacion_promedio'] = puntacion_promedio
+        context['comentarios'] = comentarios
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        #Optenemos la pelicula actual
+        pelicula = self.get_object()
+        #obtenemos la puntuación del formulario utilizando 
+        puntuacion = request.POST.get('puntuacion')
+        if puntuacion:
+            #crear una nueva Puntuacion o actualizar una existente
+            Puntuacion.objects.update_or_create(
+                pelicula=pelicula,
+                usuario=request.user,
+                defaults={'puntuacion': puntuacion},
+            )
+        return redirect('detalle', pk=pelicula.pk)
+
 class PeliculaCreate(LoginRequiredMixin, CreateView):
     model = Pelicula
     template_name = 'AppBlog/pelicula-nueva.html'
     success_url = reverse_lazy('inicio')
-    fields = ['nombre','sinopsis','foto','puntacion']
+    fields = ['nombre','sinopsis','foto']
 
 class PeliculaUpdate(LoginRequiredMixin, UpdateView):
     model = Pelicula
     template_name = 'AppBlog/pelicula-nueva.html'
     success_url = reverse_lazy('inicio')
-    fields = ['nombre','sinopsis','foto','puntacion']
+    fields = ['nombre','sinopsis','foto']
 
 class PeliculaDelete(LoginRequiredMixin,DeleteView):
     model = Pelicula
@@ -51,6 +84,52 @@ class PeliculaDelete(LoginRequiredMixin,DeleteView):
     success_url = reverse_lazy('inicio')
 
 
+#Comentario
+class ComentarioCreate(CreateView):
+    model = Comentario
+    template_name = 'AppBlog/comentario-nuevo.html'
+    form_class = ComentarioForm
+
+    def form_valid(self, form):
+        pelicula_id = self.kwargs['pelicula_id']
+        pelicula = Pelicula.objects.get(id=pelicula_id)
+        comentario = form.save(commit=False)
+        comentario.pelicula = pelicula
+        comentario.usuario = self.request.user
+        comentario.save()
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        pelicula_id = self.kwargs['pelicula_id']
+        return reverse_lazy('detalle', kwargs={'pk': pelicula_id})
+
+
+class ComentarioDelete(LoginRequiredMixin, DeleteView):
+    model = Comentario
+    
+    #get_success_url, se encarga de devolver la URL de redirección después de eliminar el comentario.
+    #La variable pelicula_id se define utilizando el atributo self.object, que representa el objeto de comentario que se está eliminando.
+    #Luego, usamos reverse_lazy para construir la URL de redirección y le pasamos el parámetro pk con el valor de pelicula_id.
+    def get_success_url(self):
+        pelicula_id = self.object.pelicula_id
+        return reverse_lazy('detalle', kwargs={'pk': pelicula_id})
+
+def comentario_pelicula(request, pelicula_id):
+    pelicula = get_object_or_404(Pelicula, id=pelicula_id)
+    comentarios = pelicula.comentarios.all().prefetch_related('usuario')
+    if request.method == 'POST':
+        mi_formulario = ComentarioForm(request.POST)
+        if mi_formulario.is_valid():
+            comentario = mi_formulario.save(commit=False)
+            comentario.pelicula = pelicula
+            comentario.usuario = request.user
+            comentario.save()
+            return redirect('detalle', pk=pelicula_id)
+    else:
+        mi_formulario = ComentarioForm()
+        print(mi_formulario)
+    
+    return render(request, 'AppBlog/pelicula-detalle.html', {'pelicula': pelicula, 'comentarios': comentarios, 'mi_formulario': mi_formulario})
 
 #Vistas del login
 def login_request(request):

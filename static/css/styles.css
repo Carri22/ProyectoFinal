@@ -11327,3 +11327,85 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
     margin-left: -15rem;
   }
 }
+
+
+/* CSS de peliculas */
+
+.peliculas-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-content: center;
+}
+
+.pelicula-card {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.pelicula-titulo {
+  margin-top: 0;
+}
+
+.pelicula-imagen {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.pelicula-botones {
+  display: flex;
+  justify-content: center;
+}
+
+.pelicula-boton {
+  display: block;
+  padding: 5px 10px;
+  margin: 5px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.pelicula-boton:hover {
+  background-color: #0069d9;
+}
+
+.pelicula-boton-ver {
+  background-color: #28a745;
+}
+
+.pelicula-boton-ver:hover {
+  background-color: #218838;
+}
+
+.pelicula-boton-editar {
+  background-color: #ffc107;
+}
+
+.pelicula-boton-editar:hover {
+  background-color: #e0a800;
+}
+
+.pelicula-boton-eliminar {
+  background-color: #dc3545;
+}
+
+.pelicula-boton-eliminar:hover {
+  background-color: #c82333;
+}
+
+img {
+  max-width: 300px;
+  max-height: 200px;
+}

@@ -10,10 +10,11 @@ Peliculas
             <div class="row">
                 <div class="col-lg-12">
                     <h1>Nueva Pelicula</h1>
-                    <form method="post">
-                    {% csrf_token %}
+                    <!-- Crear una nueva pelicula -->
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
                         {{form.as_p}}
-                        <input type="submit" value="Enviar">
+                        <button type="submit">Guardar</button>
                     </form>
                 </div>
             </div>
