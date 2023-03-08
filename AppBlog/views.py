@@ -23,9 +23,12 @@ from django.urls import  reverse_lazy
 from django.db.models import Q
 
 # Create your views here.
+
+@login_required
 def acerca_de_mi(request):
     return render(request,'AppBlog/acerca-de-mi.html')
 
+@login_required
 def inicio(request):
     return render(request,'AppBlog/inicio.html')
 
@@ -88,6 +91,8 @@ class PeliculaDelete(LoginRequiredMixin,DeleteView):
     template_name = 'AppBlog/pelicula-eliminar.html'
     success_url = reverse_lazy('inicio')
 
+
+@login_required
 def buscar_peliculas(request):
     consulta = request.GET.get('q', '') # Obtiene el término de búsqueda
     peliculas = Pelicula.objects.filter(Q(nombre__icontains=consulta)) # Realiza la búsqueda de películas
