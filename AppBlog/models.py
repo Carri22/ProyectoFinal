@@ -8,7 +8,7 @@ class Pelicula(models.Model):
     sinopsis = models.TextField()
     foto = models.ImageField(upload_to='peliculas')
     comentarios = models.ManyToManyField('Comentario', through='PeliculaComentario', related_name='pelicula_comentarios')
-
+    autor = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     def __str__(self): 
         return self.nombre
 

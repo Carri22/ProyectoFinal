@@ -11,6 +11,8 @@
         <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css" />
+
+        <script src="https://kit.fontawesome.com/61e76b8b29.js" crossorigin="anonymous"></script>
     </head>
     <body>
         <div class="d-flex" id="wrapper">
@@ -19,7 +21,7 @@
                 <div class="sidebar-heading border-bottom bg-light">Blog de peliculas</div>
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'inicio'%}">Pelicula</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Buscar pelicula</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'buscar_peliculas' %}">Buscar pelicula</a>
                 </div>
             </div>
             <!-- Page content wrapper-->
@@ -51,8 +53,8 @@
 
                                 </li>
                                 {% if user.is_authenticated %}
-                                <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#!">Link</a></li>
+                                <li class="nav-item active"><a class="nav-link" href="{% url 'acerca-de-mi' %}">Acerca de mi</a></li>
+                                
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Perfil</a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -81,4 +83,25 @@
         <!-- Core theme JS-->
         <script src="{% static 'js/scripts.js '%}"></script>
     </body>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <ul class="list-unstyled list-inline social text-center" style="font-size: 30px">
+                        <li class="list-inline-item">
+                            <a href="https://github.com/Carri22" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://www.linkedin.com/in/lucas-carrizo-8a2521231/" target="_blank">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
 </html>

@@ -5,85 +5,76 @@ Peliculas
 
 {% block contenido %}
     <!--Aqui va lo que cambia, y lo asociado a esta vista-->
-    <section class="mt-5">  
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Peliculas Detalle</h1>
-                    <p>Nombre: {{pelicula.nombre}}</p>
-                    <p>Sinopsis: {{pelicula.sinopsis}}</p> 
-                    <img src="{{pelicula.foto.url}}" alt="">
-                    <p>
-                        
-                    </p>
-                </div>
-            </div>
-        </div>
-     </section>
-     <section>  
-        <form method="post">
-            {% csrf_token %}
-            <label for="puntuacion">Califica esta película:</label>
-            <select id="puntuacion" name="puntuacion">
-                <option value="">---</option>
-                <option value="1">1 - Pésima</option>
-                <option value="2">2 - Mala</option>
-                <option value="3">3 - Regular</option>
-                <option value="4">4 - Buena</option>
-                <option value="5">5 - Excelente</option>
-            </select>
-            <button type="submit">Calificar</button>
-        </form>
-        {% if puntuacion_promedio %}
-        <p>Puntuación actual: {{ puntuacion_promedio }}</p>
-        <p>Cantidad de personas que puntuaron la pelicula: {{ cantidad_puntajes }}</p>
-        {% endif %}
-     </section>
-     <section class="mt-5">
-        <div class="container">
-            <div class="row">
-                <section class="mt-5">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <h2>Deja un comentario</h2>
-                                <a href="{% url 'comentario' pelicula_id=pelicula.id %}">Agregar comentario</a>
-                            </div>
-                        </div>
+    <div class="container">
+        <section class="mt-5">  
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Peliculas Detalle</h1>
+                        <p>Nombre: {{pelicula.nombre}}</p>
+                        <p>Sinopsis: {{pelicula.sinopsis}}</p> 
+                        <img src="{{pelicula.foto.url}}" alt="">
+                        <p>
+                            
+                        </p>
                     </div>
-                 </section>
-            </div>
-        </div>
-     </section>
-     <section class="mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2>Comentarios</h2>
-                    {% for comentario in comentarios %}
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ comentario.usuario.username }}</h5>
-                                <p class="card-text">{{ comentario.cuerpo }}</p>
-                                <p class="card-subtitle">{{ comentario.fecha_creacion }}</p>
-                                {% if comentario.usuario_id == request.user.id %}
-                                <form method="POST" action="{% url 'comentario-eliminar' comentario.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        Eliminar
-                                    </button>
-                                </form>
-                                {% endif %}
-
-                            </div>
-                        </div>
-                    {% empty %}
-                        <p>No hay comentarios para esta película.</p>
-                    {% endfor %}
                 </div>
             </div>
-        </div>
-     </section>
+         </section>
+         <section>  
+            <form method="post">
+                {% csrf_token %}
+                <label for="puntuacion">Califica esta película:</label>
+                <select id="puntuacion" name="puntuacion">
+                    <option value="">---</option>
+                    <option value="1">1 - Pésima</option>
+                    <option value="2">2 - Mala</option>
+                    <option value="3">3 - Regular</option>
+                    <option value="4">4 - Buena</option>
+                    <option value="5">5 - Excelente</option>
+                </select>
+                <button type="submit">Calificar</button>
+            </form>
+            {% if puntuacion_promedio %}
+            <p>Puntuación actual: {{ puntuacion_promedio }}</p>
+            <p>Cantidad de personas que puntuaron la pelicula: {{ cantidad_puntajes }}</p>
+            {% endif %}
+         </section>
+         <section class="mt-5">
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col-lg-12">
+                        <div class="col d-flex ">
+                            <h2 class="col-lg-3">Deja un comentario</h2>
+                            <a class="btn btn-success col-lg-2" href="{% url 'comentario' pelicula_id=pelicula.id %}">Agregar comentario</a>
+                          </div>
+                        {% for comentario in comentarios %}
+                            <div class="card mt-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ comentario.usuario.username }}</h5>
+                                    <p class="card-text">{{ comentario.cuerpo }}</p>
+                                    <p class="card-subtitle">{{ comentario.fecha_creacion }}</p>
+                                    {% if comentario.usuario_id == request.user.id %}
+                                    <form method="POST" action="{% url 'comentario-eliminar' comentario.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                    {% endif %}
+    
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p>No hay comentarios para esta película.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+         </section>
+    </div>
+    
      
      
 

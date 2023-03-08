@@ -17,16 +17,18 @@ Peliculas
                         {% for pelicula in object_list %}
                         <div class="pelicula-card">
                           <h2 class="pelicula-titulo">{{ pelicula.nombre }}</h2>
+                          <p>Autor del post: {{pelicula.autor.username}}</p>
                           <img class="pelicula-imagen" src="{{ pelicula.foto.url }}" alt="{{ pelicula.nombre }}">
                           <div class="pelicula-botones">
                             <a class="pelicula-boton pelicula-boton-ver" href="{% url 'detalle' pelicula.id %}">Ver</a>
+                            {% if pelicula.autor_id == request.user.id %}
                             <a class="pelicula-boton pelicula-boton-editar" href="{% url 'editar' pelicula.id %}">Editar</a>
                             <a class="pelicula-boton pelicula-boton-eliminar" href="{% url 'eliminar' pelicula.id %}">Eliminar</a>
+                            {% endif %}
                           </div>
                         </div>
                         {% endfor %}
-                      </div>
-                      
+                      </div>   
                 </div>
             </div>
         </div>

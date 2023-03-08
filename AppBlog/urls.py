@@ -16,5 +16,9 @@ urlpatterns = [
     #PATH RELACIONADOS A COMENTARIOS
     path('comentario/<int:pelicula_id>/', ComentarioCreate.as_view(), name='comentario'),
     path('comentario-eliminar/<pk>',ComentarioDelete.as_view(),name="comentario-eliminar"),
+    #Acerca de mi
+    path('acerca-de-mi/', acerca_de_mi, name='acerca-de-mi'),
+    #Buscar pelicula
+    path('buscar-peliculas/',buscar_peliculas,name='buscar_peliculas'),
     
 ]

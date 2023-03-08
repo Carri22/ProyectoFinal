@@ -19,8 +19,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 #Importacion de reverse_lazy
 from django.urls import  reverse_lazy
+# Q es una clase de Django que se utiliza para construir consultas complejas a través de filtros lógicos.
+from django.db.models import Q
 
 # Create your views here.
+def acerca_de_mi(request):
+    return render(request,'AppBlog/acerca-de-mi.html')
+
 def inicio(request):
     return render(request,'AppBlog/inicio.html')
 
@@ -83,8 +88,13 @@ class PeliculaDelete(LoginRequiredMixin,DeleteView):
     template_name = 'AppBlog/pelicula-eliminar.html'
     success_url = reverse_lazy('inicio')
 
+def buscar_peliculas(request):
+    consulta = request.GET.get('q', '') # Obtiene el término de búsqueda
+    peliculas = Pelicula.objects.filter(Q(nombre__icontains=consulta)) # Realiza la búsqueda de películas
+    return render(request, 'AppBlog/buscar-peliculas.html', {'peliculas': peliculas, 'consulta': consulta})
 
-#Comentario
+
+#Crud Comentario
 class ComentarioCreate(CreateView):
     model = Comentario
     template_name = 'AppBlog/comentario-nuevo.html'
@@ -99,6 +109,9 @@ class ComentarioCreate(CreateView):
         comentario.save()
         return super().form_valid(form)
     
+    #get_success_url, se encarga de devolver la URL de redirección después de eliminar el comentario.
+    #La variable pelicula_id se define utilizando el atributo self.object, que representa el objeto de comentario que se está eliminando.
+    #Luego, usamos reverse_lazy para construir la URL de redirección y le pasamos el parámetro pk con el valor de pelicula_id.
     def get_success_url(self):
         pelicula_id = self.kwargs['pelicula_id']
         return reverse_lazy('detalle', kwargs={'pk': pelicula_id})
@@ -115,6 +128,8 @@ class ComentarioDelete(LoginRequiredMixin, DeleteView):
         return reverse_lazy('detalle', kwargs={'pk': pelicula_id})
 
 def comentario_pelicula(request, pelicula_id):
+    #get_object_or_404 es una función de utilidad proporcionada por el framework Django 
+    #para recuperar un objeto de la base de datos o devolver una página de error 404 si el objeto no se encuentra.
     pelicula = get_object_or_404(Pelicula, id=pelicula_id)
     comentarios = pelicula.comentarios.all().prefetch_related('usuario')
     if request.method == 'POST':
@@ -161,6 +176,7 @@ def login_request(request):
     contexto = {'form':form}
     return render(request, 'AppBlog/login.html',contexto)
 
+#Registro
 def register(request):
     
     if request.method == "POST":
