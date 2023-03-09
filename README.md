@@ -4,7 +4,7 @@
 Lucas Carrizo
 
 ## Video de la web funcionando
-[![Video de la web funcionando](https://youtu.be/LxvdJZwCyyA))
+[![Video de la web funcionando](https://youtu.be/LxvdJZwCyyA)
 
 ## Descripción del sitio web
 El sitio web es una plataforma de posteo de películas, donde los usuarios pueden registrarse y iniciar sesión para crear, editar y eliminar publicaciones de películas. También pueden ver las publicaciones de otros usuarios, comentarlas y puntuarlas.
