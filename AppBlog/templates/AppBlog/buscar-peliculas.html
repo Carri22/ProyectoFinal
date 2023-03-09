@@ -5,42 +5,50 @@ Agregar un avatar
 {% endblock %}
 
 {% block contenido %}
-        {% if consulta %}
-        <h2>Resultados de la búsqueda para "{{ consulta }}"</h2>
-        {% else %}
-        <h2>Búsqueda de películas</h2>
-        {% endif %}
+<div class="container">
+  {% if consulta %}
+  <h2>Resultados de la búsqueda para "{{ consulta }}"</h2>
+  {% else %}
+  <h2>Búsqueda de películas</h2>
+  {% endif %}
 
-        <form action="{% url 'buscar_peliculas' %}" method="get">
-            <input type="text" name="q" value="{{ consulta }}">
-            <button type="submit">Buscar películas</button>
-        </form>
-
-        {% if peliculas %}
-        <ul class="container">
-            <div class="col-lg-12">
-                <h1 class="text-center">Peliculas</h1>
-                <div class="peliculas-container">
-                    {% for pelicula in peliculas %}
-                    <div class="pelicula-card">
-                      <h2 class="pelicula-titulo">{{ pelicula.nombre }}</h2>
-                      <p>Autor del post: {{pelicula.autor.username}}</p>
-                      <img class="pelicula-imagen" src="{{ pelicula.foto.url }}" alt="{{ pelicula.nombre }}">
-                      <div class="pelicula-botones">
-                        <a class="pelicula-boton pelicula-boton-ver" href="{% url 'detalle' pelicula.id %}">Ver</a>
-                        {% if pelicula.autor_id == request.user.id %}
-                        <a class="pelicula-boton pelicula-boton-editar" href="{% url 'editar' pelicula.id %}">Editar</a>
-                        <a class="pelicula-boton pelicula-boton-eliminar" href="{% url 'eliminar' pelicula.id %}">Eliminar</a>
-                        {% endif %}
-                      </div>
-                    </div>
-                    {% endfor %}
-                  </div>   
-            </div>
-        </ul>
-        {% else %}
-        <p>No se encontraron películas.</p>
-        {% endif %}
+  <form class="mt-3 mb-5" action="{% url 'buscar_peliculas' %}" method="get">
+    <div class="input-group">
+      <input type="text" class="form-control" name="q" value="{{ consulta }}" placeholder="Buscar películas">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+      </div>
+    </div>
+  </form>
+  {% if consulta %}
+    {% if peliculas %}
+    <ul class="container">
+        <div class="col-lg-12">
+            <h1 class="text-center">Peliculas</h1>
+            <div class="peliculas-container">
+                {% for pelicula in peliculas %}
+                <div class="pelicula-card">
+                  <h2 class="pelicula-titulo">{{ pelicula.nombre }}</h2>
+                  <p>Autor del post: {{pelicula.autor.username}}</p>
+                  <img class="pelicula-imagen" src="{{ pelicula.foto.url }}" alt="{{ pelicula.nombre }}">
+                  <div class="pelicula-botones">
+                    <a class="pelicula-boton pelicula-boton-ver" href="{% url 'detalle' pelicula.id %}">Ver</a>
+                    {% if pelicula.autor_id == request.user.id %}
+                    <a class="pelicula-boton pelicula-boton-editar" href="{% url 'editar' pelicula.id %}">Editar</a>
+                    <a class="pelicula-boton pelicula-boton-eliminar" href="{% url 'eliminar' pelicula.id %}">Eliminar</a>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>   
+        </div>
+    </ul>
+    {% else %}
+    <p>No se encontraron películas.</p>
+    {% endif %}
+  {% endif %}
+</div>
+        
 
 
     

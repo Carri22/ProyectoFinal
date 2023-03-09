@@ -80,6 +80,10 @@ class PeliculaCreate(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('inicio')
     fields = ['nombre','sinopsis','foto']
 
+    def form_valid(self, form):
+        form.instance.autor = self.request.user
+        return super().form_valid(form)
+
 class PeliculaUpdate(LoginRequiredMixin, UpdateView):
     model = Pelicula
     template_name = 'AppBlog/pelicula-nueva.html'
@@ -90,6 +94,7 @@ class PeliculaDelete(LoginRequiredMixin,DeleteView):
     model = Pelicula
     template_name = 'AppBlog/pelicula-eliminar.html'
     success_url = reverse_lazy('inicio')
+    
 
 
 @login_required
@@ -242,6 +247,10 @@ def agregar_avatar(request):
             nuevo_avatar.user = request.user
             nuevo_avatar.save()
             return redirect('/')
+        else:
+            mi_formulario = AvatarFormulario(instance=avatar)
+            return render(request, 'AppBlog/agregar-avatar.html',{'mi_formulario':mi_formulario})
+
     else:
         mi_formulario = AvatarFormulario(instance=avatar)
         return render(request, 'AppBlog/agregar-avatar.html',{'mi_formulario':mi_formulario})
