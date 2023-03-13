@@ -2,6 +2,7 @@ from django.urls import path
 from django.contrib.auth.views import LogoutView
 from .views import *
 
+handler404 = handler404
 urlpatterns = [
     path('',PeliculaList.as_view(), name="inicio"), #Esta es nuestra primer vista
     path('detalle/<pk>', PeliculaDetalle.as_view(), name='detalle'),

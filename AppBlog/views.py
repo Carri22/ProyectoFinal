@@ -23,6 +23,8 @@ from django.urls import  reverse_lazy
 from django.db.models import Q
 
 # Create your views here.
+def handler404(request, exception):
+    return render(request, '404.html', status=404)
 
 @login_required
 def acerca_de_mi(request):
